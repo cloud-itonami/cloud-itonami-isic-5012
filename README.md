@@ -175,14 +175,14 @@ clojure -M:run
 
 ### Test suite
 
-- `test/seafreightops/governor_test.clj` -- unit tests of governor hard
+- `test/seafreightops/governor_test.cljk` -- unit tests of governor hard
   checks, scope exclusion, and the self-trip regression test
-- `test/seafreightops/advisor_test.clj` -- advisor proposal shape and
+- `test/seafreightops/advisor_test.cljk` -- advisor proposal shape and
   consistency
-- `test/seafreightops/phase_test.clj` -- rollout phase logic
-- `test/seafreightops/governor_contract_test.clj` -- full graph
+- `test/seafreightops/phase_test.cljk` -- rollout phase logic
+- `test/seafreightops/governor_contract_test.cljk` -- full graph
   integration, audit trail
-- `test/seafreightops/store_contract_test.clj` -- Store protocol and
+- `test/seafreightops/store_contract_test.cljk` -- Store protocol and
   MemStore implementation
 
 ### Modules

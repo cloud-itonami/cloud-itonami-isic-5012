@@ -22,7 +22,7 @@
   in the in-memory `:audit` channel only and are NEVER in the ledger --
   so this file does not render a status branch for them.
 
-  Run: `clojure -M:dev:render-html [out-file]`
+  Run: `kbb -M:dev:render-html [out-file]`
   (default out-file: docs/samples/operator-console.html)"
   (:require [kotoba.lang.text :as str]
             [langgraph.graph :as g]

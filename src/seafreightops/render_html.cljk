@@ -24,7 +24,7 @@
 
   Run: `kbb -M:dev:render-html [out-file]`
   (default out-file: docs/samples/operator-console.html)"
-  (:require [kotoba.lang.text :as str]
+  (:require [kotoba.io :as kio] [kotoba.lang.text :as str]
             [langgraph.graph :as g]
             [seafreightops.advisor :as advisor]
             [seafreightops.governor :as governor]
@@ -339,8 +339,8 @@
 (defn -main [& args]
   (let [out (or (first args) "docs/samples/operator-console.html")
         db  (run-demo!)
-        f   (java.io.File. ^String out)]
-    (when-let [p (.getParentFile f)] (.mkdirs p))
+        f   (kio/file ^String out)]
+    (when-let [p (kio/parent-file f)] (kio/mkdirs p))
     (spit f (render db))
     (println "wrote" out
              (format "(%d ledger facts, %d HARD holds, %d coordination records)"

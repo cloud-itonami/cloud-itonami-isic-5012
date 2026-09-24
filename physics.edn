@@ -1,0 +1,35 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": a robot may perform the physical work of sea
+;; and coastal freight (ISIC 5012) on the port side -- cargo handling and
+;; container-yard operations; nobody here navigates the vessel. Here: an
+;; automated guided vehicle (AGV) shuttling a container from the quay crane
+;; to the yard, and an automated straddle carrier stopping with a container
+;; lifted high.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-5012"
+ :cases
+ [{:id :agv-quay-to-yard
+   :kind :transport
+   :procedure "container AGV (25 t) carries one container 300 m from under the quay crane to the yard block; the container's gross mass is swept"
+   :params {:mass-kg 25000.0 :distance-m 300.0 :v-max-mps 6.0 :a-max-mps2 0.5
+            :brake-decel-mps2 1.0 :drive-force-n 30000.0 :crr 0.010 :cog-height-m 1.0
+            :payload-cog-height-m 2.5 :support-half-length-m 3.0 :max-time-s 900.0}
+   :sweep {:param :payload-kg :values [4000.0 10000.0 20000.0 30000.0 36000.0]}
+   :quantity :cycle-time-s
+   :limit {:max 60.0 :basis "estimate: the AGV leg must fit inside one quay-crane move cycle (~1-1.5 min) so the crane never waits; tractive force and rolling resistance are estimates too"}
+   :boundary {:lo 0.0 :hi 80000.0}}
+  {:id :straddle-carrier-stop-lifted
+   :kind :transport
+   :procedure "automated straddle carrier (60 t) travels with a 30 t container lifted to one-over-two height and brakes for an obstacle in the yard lane"
+   :params {:mass-kg 60000.0 :payload-kg 30000.0 :distance-m 150.0 :v-max-mps 7.0 :a-max-mps2 0.5
+            :drive-force-n 90000.0 :crr 0.012 :cog-height-m 4.0 :payload-cog-height-m 5.0
+            :support-half-length-m 2.8 :max-time-s 900.0}
+   :sweep {:param :brake-decel-mps2 :values [1.0 2.0 3.0 4.0 5.0 6.0]}
+   :quantity :min-tipover-margin
+   :limit {:min 0.25 :basis "estimate: keep a 25 % longitudinal stability reserve for a tall straddle carrier with a lifted box; carrier geometry and CoG are estimates"}
+   :boundary {:lo 0.5 :hi 8.0}}]}
